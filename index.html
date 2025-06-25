@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מעבדת הפרומפטים המתקדמת - פרק ב' | LANCHI</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Heebo', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .lanchi-logo {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+
+        .lab-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .station-card {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .station-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .generator-card {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .custom-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: left 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-left: 2.5rem;
+        }
+
+        .demo-area {
+            background: linear-gradient(145deg, #f8fafc, #e2e8f0);
+            border-radius: 15px;
+            border: 2px dashed #667eea;
+            min-height: 200px;
+        }
+
+        .prompt-output {
+            background: linear-gradient(145deg, #1a202c, #2d3748);
+            color: #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            min-height: 150px;
+        }
+
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .interactive-button {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .credit-section {
+            background: linear-gradient(145deg, #1a202c, #2d3748);
+            color: white;
+            border-radius: 15px;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        /* Navigation Styles */
+        .top-nav {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-link {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            font-weight: 600;
+        }
+
+        .footer-nav {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .footer-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-nav-section h4 {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-nav-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+        }
+
+        .footer-nav-links a:hover {
+            color: #667eea;
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .top-nav .flex {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .footer-nav-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ניווט עליון -->
+    <nav class="top-nav">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-center items-center gap-6 flex-wrap">
+                <a href="https://prompt10.netlify.app/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>דף הבית</span>
+                </a>
+                <a href="https://prompt10.netlify.app/" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>פרק א': היסודות</span>
+                </a>
+                <a href="https://prompt20.netlify.app/" class="nav-link active">
+                    <i class="fas fa-flask"></i>
+                    <span>פרק ב': המעבדה</span>
+                </a>
+                <a href="https://prompt30.netlify.app/" class="nav-link">
+                    <i class="fas fa-rocket"></i>
+                    <span>פרק ג': המחולל</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- כותרת עם לוגו -->
+        <header class="text-center mb-12">
+            <div class="flex justify-center items-center mb-6">
+                <img src="https://cdn1.genspark.ai/user-upload-image/22_generated/3c1fc5ac-8855-4c3d-a9d0-a082d92e013d" alt="LANCHI Logo" class="lanchi-logo">
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4 floating-element">
+                🧪 מעבדת הפרומפטים המתקדמת
+            </h1>
+            <h2 class="text-3xl font-semibold text-white mb-6">
+                פרק ב': כלים מקצועיים ומחולל פרומפטים ייחודי
+            </h2>
+            <p class="text-xl text-white opacity-90 max-w-3xl mx-auto">
+                ברוכים הבאים למעבדה המתקדמת! כאן תלמדו טכניקות מקצועיות לכתיבת פרומפטים ותקבלו גישה למחולל הפרומפטים הייחודי שלנו
+            </p>
+        </header>
+
+        <!-- מחולל הפרומפטים הייחודי -->
+        <section class="lab-section p-8 mb-12">
+            <div class="generator-card p-8">
+                <h3 class="text-3xl font-bold text-center mb-6 flex items-center justify-center">
+                    <i class="fas fa-magic mr-4"></i>
+                    מחולל הפרומפטים הייחודי
+                </h3>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">סוג המשימה</label>
+                        <select id="taskType" class="w-full p-3 rounded-lg bg-white text-gray-800 custom-select">
+                            <option value="">בחר סוג משימה</option>
+                            <option value="creative">יצירתי</option>
+                            <option value="analytical">אנליטי</option>
+                            <option value="technical">טכני</option>
+                            <option value="educational">חינוכי</option>
+                            <option value="business">עסקי</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">תחום מקצועי</label>
+                        <select id="domain" class="w-full p-3 rounded-lg bg-white text-gray-800 custom-select">
+                            <option value="">בחר תחום</option>
+                            <option value="marketing">שיווק ופרסום</option>
+                            <option value="programming">תכנות</option>
+                            <option value="design">עיצוב</option>
+                            <option value="writing">כתיבה</option>
+                            <option value="education">חינוך</option>
+                            <option value="business">עסקים</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">רמת מורכבות</label>
+                        <select id="complexity" class="w-full p-3 rounded-lg bg-white text-gray-800 custom-select">
+                            <option value="">בחר רמה</option>
+                            <option value="basic">בסיסי</option>
+                            <option value="intermediate">בינוני</option>
+                            <option value="advanced">מתקדם</option>
+                            <option value="expert">מומחה</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center mb-6">
+                    <button onclick="generatePrompt()" class="interactive-button text-xl px-8 py-4">
+                        <i class="fas fa-wand-magic-sparkles mr-2"></i>
+                        צור פרומפט מותאם אישית
+                    </button>
+                </div>
+                
+                <div id="generatedPrompt" class="prompt-output p-6 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-semibold">הפרומפט שנוצר:</h4>
+                        <button onclick="copyPrompt()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm">
+                            <i class="fas fa-copy mr-1"></i>
+                            העתק
+                        </button>
+                    </div>
+                    <div id="promptText" class="text-sm leading-relaxed"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5 תחנות העבודה -->
+        <section class="lab-section p-8 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-8 text-gray-800">
+                <i class="fas fa-flask mr-3"></i>
+                תחנות העבודה האינטראקטיביות
+            </h3>
+            
+            <div class="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                <!-- תחנה 1: Chain of Thought -->
+                <div class="station-card p-6">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-link text-4xl text-blue-600 mb-3"></i>
+                        <h4 class="text-xl font-bold text-gray-800">תחנת Chain of Thought</h4>
+                        <p class="text-gray-600 text-sm">חשיבה שלבית מובנית</p>
+                    </div>
+                    
+                    <div class="demo-area p-4 mb-4">
+                        <div class="text-sm text-gray-700 mb-3">
+                            <strong>דוגמה:</strong> פתרון בעיה מתמטית בשלבים
+                        </div>
+                        <div class="bg-white p-3 rounded text-xs">
+                            "פתור את הבעיה הבאה שלב אחר שלב:<br>
+                            שלב 1: זהה את המידע הנתון<br>
+                            שלב 2: קבע מה נדרש למצוא<br>
+                            שלב 3: בחר את השיטה המתאימה<br>
+                            שלב 4: בצע את החישוב<br>
+                            שלב 5: בדוק את התוצאה"
+                        </div>
+                    </div>
+                    
+                    <button onclick="tryChainOfThought()" class="interactive-button w-full">
+                        <i class="fas fa-play mr-2"></i>
+                        נסה בעצמך
+                    </button>
+                </div>
+
+                <!-- תחנה 2: Role Playing -->
+                <div class="station-card p-6">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-masks-theater text-4xl text-green-600 mb-3"></i>
+                        <h4 class="text-xl font-bold text-gray-800">תחנת Role Playing</h4>
+                        <p class="text-gray-600 text-sm">משחק תפקידים מקצועי</p>
+                    </div>
+                    
+                    <div class="demo-area p-4 mb-4">
+                        <div class="text-sm text-gray-700 mb-3">
+                            <strong>דוגמה:</strong> יועץ עסקי מקצועי
+                        </div>
+                        <div class="bg-white p-3 rounded text-xs">
+                            "אתה יועץ עסקי בעל 20 שנות ניסיון.<br>
+                            התמחותך: אסטרטגיה ושיווק דיגיטלי<br>
+                            סגנון עבודה: מעשי, ישיר, מבוסס נתונים<br>
+                            המומחיות שלך כוללת ניתוח שוק ותחרות<br>
+                            בקש מהלקוח פרטים ספציפיים לפני מתן עצה"
+                        </div>
+                    </div>
+                    
+                    <button onclick="tryRolePlaying()" class="interactive-button w-full">
+                        <i class="fas fa-play mr-2"></i>
+                        נסה בעצמך
+                    </button>
+                </div>
+
+                <!-- תחנה 3: Few-Shot Learning -->
+                <div class="station-card p-6">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-graduation-cap text-4xl text-purple-600 mb-3"></i>
+                        <h4 class="text-xl font-bold text-gray-800">תחנת Few-Shot Learning</h4>
+                        <p class="text-gray-600 text-sm">למידה מדוגמאות</p>
+                    </div>
+                    
+                    <div class="demo-area p-4 mb-4">
+                        <div class="text-sm text-gray-700 mb-3">
+                            <strong>דוגמה:</strong> כתיבת כותרות פרסומיות
+                        </div>
+                        <div class="bg-white p-3 rounded text-xs">
+                            "כתוב כותרת פרסומית לפי הדוגמאות:<br><br>
+                            מוצר: נעלי ריצה → כותרת: 'רץ לעתיד עם נעלי הספורט החדשניות'<br>
+                            מוצר: אפליקציה לתזונה → כותרת: 'הדרך הקלה למזון בריא ומאוזן'<br><br>
+                            עכשיו כתוב כותרת למוצר שלי: [מוצר]"
+                        </div>
+                    </div>
+                    
+                    <button onclick="tryFewShot()" class="interactive-button w-full">
+                        <i class="fas fa-play mr-2"></i>
+                        נסה בעצמך
+                    </button>
+                </div>
+
+                <!-- תחנה 4: Multi-Step Reasoning -->
+                <div class="station-card p-6">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-stairs text-4xl text-red-600 mb-3"></i>
+                        <h4 class="text-xl font-bold text-gray-800">תחנת Multi-Step</h4>
+                        <p class="text-gray-600 text-sm">חשיבה רב-שלבית</p>
+                    </div>
+                    
+                    <div class="demo-area p-4 mb-4">
+                        <div class="text-sm text-gray-700 mb-3">
+                            <strong>דוגמה:</strong> תכנון פרויקט עסקי
+                        </div>
+                        <div class="bg-white p-3 rounded text-xs">
+                            "תכנן פרויקט בשלבים מדורגים:<br>
+                            שלב ראשון: מחקר ואיסוף מידע<br>
+                            שלב שני: ניתוח וסינתזה<br>
+                            שלב שלישי: פיתוח אסטרטגיה<br>
+                            שלב רביעי: יישום מדורג<br>
+                            לכל שלב - הגדר יעדים, משאבים ולוח זמנים"
+                        </div>
+                    </div>
+                    
+                    <button onclick="tryMultiStep()" class="interactive-button w-full">
+                        <i class="fas fa-play mr-2"></i>
+                        נסה בעצמך
+                    </button>
+                </div>
+
+                <!-- תחנה 5: אופטימיזציה -->
+                <div class="station-card p-6">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-chart-line text-4xl text-orange-600 mb-3"></i>
+                        <h4 class="text-xl font-bold text-gray-800">תחנת האופטימיזציה</h4>
+                        <p class="text-gray-600 text-sm">שיפור פרומפטים קיימים</p>
+                    </div>
+                    
+                    <div class="demo-area p-4 mb-4">
+                        <div class="text-sm text-gray-700 mb-3">
+                            <strong>לפני:</strong> "כתוב לי על שיווק"
+                        </div>
+                        <div class="bg-red-100 p-3 rounded text-xs mb-2">
+                            פרומפט גנרי ולא ספציפי
+                        </div>
+                        <div class="text-sm text-gray-700 mb-3">
+                            <strong>אחרי:</strong> "כשיווקן דיגיטלי עם 10 שנות ניסיון..."
+                        </div>
+                        <div class="bg-green-100 p-3 rounded text-xs">
+                            "כשיווקן דיגיטלי עם 10 שנות ניסיון, כתוב אסטרטגיית שיווק מפורטת לסטארט-אפ טכנולוגי בתחום הפינטק, כולל ניתוח קהל יעד, ערוצי שיווק מומלצים ותקציב מוערך לחצי שנה ראשונה"
+                        </div>
+                    </div>
+                    
+                    <button onclick="tryOptimization()" class="interactive-button w-full">
+                        <i class="fas fa-play mr-2"></i>
+                        נסה בעצמך
+                    </button>
+                </div>
+
+                <!-- מנתח פרומפטים -->
+                <div class="station-card p-6">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-search text-4xl text-indigo-600 mb-3"></i>
+                        <h4 class="text-xl font-bold text-gray-800">מנתח פרומפטים חכם</h4>
+                        <p class="text-gray-600 text-sm">בדיקה ושיפור אוטומטי</p>
+                    </div>
+                    
+                    <div class="demo-area p-4 mb-4">
+                        <textarea id="promptAnalyzer" placeholder="הדבק כאן פרומפט לניתוח..." class="w-full h-20 p-3 rounded border resize-none text-sm"></textarea>
+                        <div id="analysisResult" class="mt-3 text-xs text-gray-600 hidden">
+                            <div class="bg-yellow-100 p-2 rounded mb-2">
+                                <strong>ניתוח:</strong> הפרומפט זקוק לשיפורים
+                            </div>
+                            <div class="bg-green-100 p-2 rounded">
+                                <strong>הצעות לשיפור:</strong> הוסף הקשר, הגדר תפקיד, ציין פורמט רצוי
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="analyzePrompt()" class="interactive-button w-full">
+                        <i class="fas fa-play mr-2"></i>
+                        נתח פרומפט
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ספריית תבניות -->
+        <section class="lab-section p-8 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-8 text-gray-800">
+                <i class="fas fa-book mr-3"></i>
+                ספריית התבניות המקצועית
+            </h3>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-blue-400 to-blue-600 text-white p-6 rounded-lg">
+                    <h4 class="font-bold text-lg mb-3">תבנית עסקית</h4>
+                    <p class="text-sm opacity-90 mb-4">ליצירת תוכן עסקי מקצועי</p>
+                    <button onclick="useTemplate('business')" class="bg-white text-blue-600 px-4 py-2 rounded font-semibold text-sm">
+                        השתמש בתבנית
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-br from-green-400 to-green-600 text-white p-6 rounded-lg">
+                    <h4 class="font-bold text-lg mb-3">תבנית יצירתית</h4>
+                    <p class="text-sm opacity-90 mb-4">לכתיבה יצירתית ותוכן מקורי</p>
+                    <button onclick="useTemplate('creative')" class="bg-white text-green-600 px-4 py-2 rounded font-semibold text-sm">
+                        השתמש בתבנית
+                    </button>
+                </div>
+                
+                <div class="bg-gradient-to-br from-purple-400 to-purple-600 text-white p-6 rounded-lg">
+                    <h4 class="font-bold text-lg mb-3">תבנית טכנית</h4>
+                    <p class="text-sm opacity-90 mb-4">לפתרון בעיות טכניות מורכבות</p>
+                    <button onclick="useTemplate('technical')" class="bg-white text-purple-600 px-4 py-2 rounded font-semibold text-sm">
+                        השתמש בתבנית
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- טיפים מתקדמים -->
+        <section class="lab-section p-8 mb-12">
+            <h3 class="text-3xl font-bold text-center mb-8 text-gray-800">
+                <i class="fas fa-lightbulb mr-3"></i>
+                טיפים מתקדמים למומחים
+            </h3>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 p-6 rounded-lg">
+                    <h4 class="font-bold text-xl mb-4 text-yellow-800">
+                        <i class="fas fa-star mr-2"></i>
+                        טיפ מקצועי #1
+                    </h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        השתמש ב"Temperature Control" - לתוצאות יצירתיות השתמש ב-temperature גבוה (0.8-1.0), 
+                        לתוצאות עקביות ומדויקות השתמש ב-temperature נמוך (0.1-0.3).
+                    </p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-100 to-blue-200 p-6 rounded-lg">
+                    <h4 class="font-bold text-xl mb-4 text-blue-800">
+                        <i class="fas fa-star mr-2"></i>
+                        טיפ מקצועי #2
+                    </h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        שילוב טכניקות - קח את ה-Chain of Thought וצרף לו Role Playing ליצירת 
+                        פרומפטים רב-ממדיים שמדמים חשיבה מקצועית אמיתית.
+                    </p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-green-100 to-green-200 p-6 rounded-lg">
+                    <h4 class="font-bold text-xl mb-4 text-green-800">
+                        <i class="fas fa-star mr-2"></i>
+                        טיפ מקצועי #3
+                    </h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        שימוש ב"Constraint Prompting" - הגבל את התשובה במסגרת ספציפית 
+                        (אורך, פורמט, סגנון) כדי לקבל תוצאות מותאמות בדיוק לצרכים שלך.
+                    </p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-purple-100 to-purple-200 p-6 rounded-lg">
+                    <h4 class="font-bold text-xl mb-4 text-purple-800">
+                        <i class="fas fa-star mr-2"></i>
+                        טיפ מקצועי #4
+                    </h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        "Iterative Refinement" - התחל עם פרומפט בסיסי ושכלל אותו בהדרגה 
+                        על בסיס התוצאות. כל איטרציה צריכה להיות מדויקת יותר מהקודמת.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ניווט תחתון -->
+        <footer class="footer-nav">
+            <div class="footer-nav-grid">
+                <div class="footer-nav-section">
+                    <h4><i class="fas fa-map"></i> ניווט מהיר</h4>
+                    <ul class="footer-nav-links">
+                        <li><a href="https://prompt10.netlify.app/"><i class="fas fa-book"></i> פרק א': היסודות</a></li>
+                        <li><a href="https://prompt20.netlify.app/"><i class="fas fa-flask"></i> פרק ב': המעבדה המתקדמת</a></li>
+                        <li><a href="https://prompt30.netlify.app/"><i class="fas fa-rocket"></i> פרק ג': המחולל האולטימטיבי</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h4><i class="fas fa-tools"></i> כלים מתקדמים</h4>
+                    <ul class="footer-nav-links">
+                        <li><a href="#generator"><i class="fas fa-magic"></i> מחולל הפרומפטים</a></li>
+                        <li><a href="#stations"><i class="fas fa-flask"></i> תחנות העבודה</a></li>
+                        <li><a href="#templates"><i class="fas fa-book"></i> ספריית התבניות</a></li>
+                        <li><a href="#analyzer"><i class="fas fa-search"></i> מנתח פרומפטים</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h4><i class="fas fa-link"></i> משאבים נוספים</h4>
+                    <ul class="footer-nav-links">
+                        <li><a href="https://prompt12.netlify.app/" target="_blank"><i class="fas fa-external-link-alt"></i> מדריך פרומפטים נוסף</a></li>
+                        <li><a href="https://app.base44.com/apps/685bd639e3f033f6992891a2/editor/preview/PromptGuide" target="_blank"><i class="fas fa-external-link-alt"></i> מדריך מתקדם</a></li>
+                        <li><a href="https://v0-interactive-landing-page-nine.vercel.app/" target="_blank"><i class="fas fa-external-link-alt"></i> דף נחיתה אינטראקטיבי</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-nav-section">
+                    <h4><i class="fas fa-info-circle"></i> אודות LANCHI</h4>
+                    <ul class="footer-nav-links">
+                        <li><a href="#"><i class="fas fa-user"></i> פרופיל מלנצי</a></li>
+                        <li><a href="#"><i class="fas fa-users"></i> לבני המשפחה והחברים</a></li>
+                        <li><a href="#"><i class="fas fa-heart"></i> נוצר באהבה</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="text-center pt-6 border-t border-gray-600">
+                <div class="flex justify-center items-center mb-4">
+                    <img src="https://cdn1.genspark.ai/user-upload-image/22_generated/3c1fc5ac-8855-4c3d-a9d0-a082d92e013d" alt="LANCHI Logo" class="w-12 h-auto mr-3">
+                    <div>
+                        <h4 class="text-lg font-bold text-white">נוצר על ידי LANCHI</h4>
+                        <p class="text-gray-300 text-sm">מלנצי לטובת שימוש בני המשפחה והחברים</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-400">
+                    מעבדת הפרומפטים המתקדמת | פרק ב' | כלים מקצועיים ייחודיים | © 2024 LANCHI
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // מחולל פרומפטים
+        function generatePrompt() {
+            const taskType = document.getElementById('taskType').value;
+            const domain = document.getElementById('domain').value;
+            const complexity = document.getElementById('complexity').value;
+            
+            if (!taskType || !domain || !complexity) {
+                alert('אנא בחר את כל האפשרויות');
+                return;
+            }
+            
+            const prompts = {
+                creative: {
+                    marketing: {
+                        basic: "כמומחה שיווק יצירתי, צור קמפיין פרסומי חדשני שיכלול סלוגן, רעיון מרכזי ו-3 ערוצי שיווק מומלצים. התמקד בחוויית הלקוח והשפעה רגשית.",
+                        intermediate: "כמנהל שיווק ויצירתיות עם 5 שנות ניסיון, פתח אסטרטגיית תוכן יצירתית למותג חדש. כלול ניתוח קהל יעד, טון קול מותג, רעיונות לתוכן ירחי ומדדי הצלחה.",
+                        advanced: "כסמנכ\"ל שיווק יצירתי עם מעל 10 שנות ניסיון, בנה אסטרטגיית מיתוג מלאה לחברה הרוצה להתחדש. כלול מחקר שוק, מיצוב מחדש, זהות ויזואלית וקמפיין השקה בינלאומי.",
+                        expert: "כיועץ מיתוג אסטרטגי ברמה עולמית, פתח תפיסת מיתוג פורצת דרך שתשנה את התעשייה. כלול ניתוח טרנדים עתידיים, חדשנות טכנולוגית, אסטרטגיית omnichannel וחזון ל-5 שנים קדימה."
+                    },
+                    programming: {
+                        basic: "כמפתח יצירתי, בנה אפליקציה פשוטה ומעניינת שתפתור בעיה יומיומית. כלול רעיון יצירתי, ממשק נוח ו-3 תכונות ייחודיות.",
+                        intermediate: "כמפתח full-stack יצירתי, פתח פתרון טכנולוגי חדש למגזר הספציפי. כלול ארכיטקטורה מקורית, UX חדשני וטכנולוגיות מתקדמות.",
+                        advanced: "כארכיטקט תוכנה יצירתי, תכנן מערכת מורכבת ומהפכנית שתשנה את התעשייה. כלול חדשנות טכנולוגית, מדרגיות ואבטחה מתקדמת.",
+                        expert: "כטכנולוג ראשי חדשני, צור פתרון פורץ דרך המשלב AI, blockchain וטכנולוגיות עתידיות. כלול חזון טכנולוגי, מודל עסקי חדשני ואסטרטגיית יישום עולמית."
+                    }
+                },
+                analytical: {
+                    business: {
+                        basic: "כאנליסט עסקי, נתח בעיה עסקית בסיסית באמצעות 5 השלבים: זיהוי הבעיה, איסוף נתונים, ניתוח, מסקנות והמלצות פרקטיות.",
+                        intermediate: "כמנתח עסקי בכיר, בצע ניתוח מעמיק של תהליך עסקי. כלול mapping של התהליך הנוכחי, זיהוי צווארי בקבוק, הצעות לשיפור ו-ROI צפוי מהשינויים.",
+                        advanced: "כיועץ ניתוח עסקי מומחה, בנה מודל אנליטי מתקדם לחיזוי ביצועים עסקיים. השתמש במתודולוגיות מתקדמות, בינה עסקית ו-KPIs מורכבים.",
+                        expert: "כמומחה אנליטיקה עסקית ברמה עולמית, פתח framework חדשני לניתוח טרנספורמציה דיגיטלית. כלול AI/ML, big data analytics, predictive modeling ואסטרטגיה התמודדות עם disruption."
+                    },
+                    marketing: {
+                        basic: "כאנליסט שיווק, נתח ביצועי קמפיין שיווקי בסיסי. כלול מדדי הצלחה עיקריים, ROI וההמלצות לשיפור.",
+                        intermediate: "כמנתח שיווק דיגיטלי, בצע ניתוח מעמיק של customer journey. כלול ניתוח touchpoints, conversion funnels ו-attribution modeling.",
+                        advanced: "כמומחה אנליטיקת שיווק, בנה מודל חיזוי מתקדם לביצועי שיווק. השתמש במידול סטטיסטי, machine learning ובינה עסקית מתקדמת.",
+                        expert: "כמדען נתונים שיווקי ברמה עולמית, פתח אלגוריתמים חדשניים לאופטימיזציה אוטומטית של קמפיינים. כלול AI/ML מתקדם, real-time optimization ו-predictive analytics."
+                    }
+                }
+            };
+            
+            // בחירת פרומפט מתוך המאגר או יצירת כללי
+            let generatedPrompt = "";
+            
+            if (prompts[taskType] && prompts[taskType][domain] && prompts[taskType][domain][complexity]) {
+                generatedPrompt = prompts[taskType][domain][complexity];
+            } else {
+                // יצירת פרומפט כללי
+                generatedPrompt = `אתה מומחה ${domain} במשימות ${taskType} ברמה ${complexity}. `;
+                
+                // הוספת הנחיות ספציפיות לפי רמה
+                switch(complexity) {
+                    case 'basic':
+                        generatedPrompt += "הסבר בפשטות, תן דוגמאות ברורות וכלול שלבים מעשיים.";
+                        break;
+                    case 'intermediate':
+                        generatedPrompt += "כלול ניתוח מעמיק, המלצות מבוססות ניסיון ודוגמאות מהתעשייה.";
+                        break;
+                    case 'advanced':
+                        generatedPrompt += "בנה אסטרטגיה מקיפה, כלול מחקר, ניתוח תחרותי וחזון ארוך טווח.";
+                        break;
+                    case 'expert':
+                        generatedPrompt += "פתח פתרונות חדשניים, כלול טכנולוגיות מתקדמות ותובנות עתידיות.";
+                        break;
+                }
+            }
+            
+            // הצגת התוצאה
+            document.getElementById('generatedPrompt').classList.remove('hidden');
+            document.getElementById('promptText').textContent = generatedPrompt;
+        }
+
+        function copyPrompt() {
+            const promptText = document.getElementById('promptText').textContent;
+            navigator.clipboard.writeText(promptText).then(() => {
+                alert('הפרומפט הועתק בהצלחה!');
+            });
+        }
+
+        // פונקציות התחנות
+        function tryChainOfThought() {
+            alert('תחנת Chain of Thought מופעלת!\n\nדוגמה אינטראקטיבית:\n\nמשימה: חשב על פתרון לבעיית תנועה בעיר\n\nשלב 1: מה הבעיה העיקרית?\n- עומס תנועה בשעות העומס\n- חניה מוגבלת במרכז העיר\n\nשלב 2: מה הגורמים?\n- כמות רכבים גדולה\n- תחבורה ציבורית לא יעילה\n\nשלב 3: פתרונות אפשריים...\n\nכך ממשיכים שלב אחר שלב!');
+        }
+
+        function tryRolePlaying() {
+            alert('תחנת Role Playing מופעלת!\n\nאתה עכשיו: מומחה תחבורה עירונית\nניסיון: 15 שנה\nהתמחות: פתרונות תחבורה חכמה\n\nהלקוח שואל: "איך לפתור את בעיית התנועה בעיר שלנו?"\n\nהתשובה שלך תהיה מקצועית ומבוססת על הנסיון שלך כמומחה בתחום!');
+        }
+
+        function tryFewShot() {
+            alert('תחנת Few-Shot Learning מופעלת!\n\nלמד מהדוגמאות הבאות:\n\nבעיה: עייפות → פתרון: שינה מספקת + תזונה מאוזנת\nבעיה: לחץ → פתרון: מדיטציה + ניהול זמן\nבעיה: חוסר מוטיבציה → פתרון: הגדרת יעדים + מערכת תגמולים\n\nעכשיו פתור: בעיה - קושי בקבלת החלטות\nמה הפתרון שלך על פי הדוגמאות?');
+        }
+
+        function tryMultiStep() {
+            alert('תחנת Multi-Step מופעלת!\n\nמשימה: תכנון מסיבת יום הולדת\n\nשלב א: תכנון ראשוני (2 שבועות לפני)\n- קביעת תאריך ומקום\n- רשימת מוזמנים\n- תקציב\n\nשלב ב: הכנות (שבוע לפני)\n- הזמנות\n- קניות\n- הכנת מקום\n\nשלב ג: יום האירוע\n- הגדרה אחרונה\n- קבלת פנים\n- ניהול האירוע\n\nכך בונים תכנית רב-שלבית!');
+        }
+
+        function tryOptimization() {
+            const userPrompt = prompt('הדבק פרומפט לשיפור:');
+            if (userPrompt) {
+                let optimized = "גרסה משופרת:\n\n";
+                optimized += "אתה מומחה בתחום [ציין תחום ספציפי] עם [ציין ניסיון]. ";
+                optimized += userPrompt;
+                optimized += "\n\nאנא ספק תשובה מפורטת הכוללת:\n1. ניתוח הבעיה\n2. פתרונות אלטרנטיביים\n3. המלצה סופית עם נימוק\n4. שלבים מעשיים ליישום";
+                alert('פרומפט משופר:\n\n' + optimized);
+            }
+        }
+
+        function analyzePrompt() {
+            const prompt = document.getElementById('promptAnalyzer').value;
+            if (!prompt.trim()) {
+                alert('אנא הכנס פרומפט לניתוח');
+                return;
+            }
+            
+            document.getElementById('analysisResult').classList.remove('hidden');
+            
+            // ניתוח בסיסי
+            let analysis = "ניתוח הפרומפט:\n";
+            let suggestions = [];
+            
+            if (prompt.length < 50) {
+                suggestions.push("⚠️ הפרומפט קצר מדי - הוסף פרטים נוספים");
+            }
+            if (!prompt.includes('אתה') && !prompt.includes('כמומחה')) {
+                suggestions.push("💡 הוסף הגדרת תפקיד למערכת");
+            }
+            if (!prompt.includes('כלול') && !prompt.includes('הסבר')) {
+                suggestions.push("📋 ציין פורמט רצוי לתשובה");
+            }
+            if (prompt.split(' ').length > 200) {
+                suggestions.push("✂️ הפרומפט ארוך מדי - קצר אותו");
+            }
+            if (suggestions.length === 0) {
+                suggestions.push("✅ הפרומפט נראה טוב!");
+            }
+            
+            const analysisHtml = `
+                <div class="bg-blue-100 p-3 rounded mb-2">
+                    <strong>ניתוח אוטומטי:</strong><br>
+                    אורך: ${prompt.length} תווים<br>
+                    מילים: ${prompt.split(' ').length}<br>
+                    משפטים: ${prompt.split('.').length}
+                </div>
+                <div class="bg-yellow-100 p-3 rounded">
+                    <strong>הצעות לשיפור:</strong><br>
+                    ${suggestions.join('<br>')}
+                </div>
+            `;
+            
+            document.getElementById('analysisResult').innerHTML = analysisHtml;
+        }
+
+        function useTemplate(type) {
+            const templates = {
+                business: "אתה יועץ עסקי מנוסה עם התמחות ב[תחום]. נתח את המצב העסקי הבא ותן המלצות מעשיות:\n\n[תאר את המצב]\n\nאנא כלול:\n1. ניתוח SWOT\n2. המלצות אסטרטגיות\n3. תכנית יישום\n4. מדדי הצלחה",
+                creative: "אתה כותב יצירתי ומנוסה. צור תוכן מקורי ומעניין על הנושא:\n\n[נושא]\n\nהדרישות:\n- סגנון: [ציין סגנון]\n- אורך: [ציין אורך]\n- קהל יעד: [ציין קהל]\n- מטרה: [ציין מטרה]",
+                technical: "אתה מהנדס תוכנה מומחה. פתר את הבעיה הטכנית הבאה:\n\n[תאר בעיה]\n\nאנא כלול:\n1. ניתוח הבעיה\n2. פתרונות אפשריים\n3. קוד לדוגמה\n4. בדיקות ואימות\n5. תיעוד"
+            };
+            
+            navigator.clipboard.writeText(templates[type]).then(() => {
+                alert('תבנית ' + type + ' הועתקה ללוח!\n\n' + templates[type]);
+            });
+        }
+
+        // הוספת אנימציות ואפקטים
+        document.addEventListener('DOMContentLoaded', function() {
+            // אנימציית כניסה לכרטיסים
+            const cards = document.querySelectorAll('.station-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+            
+            // הוספת smooth scroll לקישורים פנימיים
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
